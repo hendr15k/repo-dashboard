@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hendr15k — Repo Dashboard</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-secondary: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --yellow: #d29922;
+    --purple: #bc8cff;
+    --blue: #58a6ff;
+    --orange: #f0883e;
+    --pink: #f778ba;
+    --lang-js: #f1e05a;
+    --lang-ts: #3178c6;
+    --lang-python: #3572A5;
+    --lang-html: #e34c26;
+    --lang-kotlin: #A97BFF;
+    --lang-java: #b07219;
+    --lang-php: #4F5D95;
+    --lang-less: #1e3650;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    background: var(--surface);
+  }
+  .header-left { display: flex; align-items: center; gap: 1rem; }
+  .header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .header h1 a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .header h1 a:hover { text-decoration: underline; }
+  .stats {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+  .stats span { display: flex; align-items: center; gap: 0.35rem; }
+  .refresh-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .refresh-btn:hover { border-color: var(--accent); background: #1c2333; }
+  .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .refresh-btn svg { transition: transform 0.3s; }
+  .refresh-btn.spinning svg { animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+  .search-bar {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .search-bar input {
+    flex: 1;
+    min-width: 200px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar input:focus { border-color: var(--accent); }
+  .search-bar input::placeholder { color: var(--text-secondary); }
+  .filter-chips { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .chip {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chip:hover { border-color: var(--text-secondary); color: var(--text); }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .repo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1rem;
+  }
+  .repo-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    transition: border-color 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .repo-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .repo-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .repo-name a { color: var(--accent); text-decoration: none; }
+  .repo-name a:hover { text-decoration: underline; }
+  .vis-icon { font-size: 0.8rem; opacity: 0.7; flex-shrink: 0; }
+  .repo-desc {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    flex: 1;
+    min-height: 1.3em;
+  }
+  .repo-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+  .lang-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .lang-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .ci-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .ci-success { background: var(--green); box-shadow: 0 0 4px var(--green); }
+  .ci-failure { background: var(--red); box-shadow: 0 0 4px var(--red); }
+  .ci-na { background: var(--border); }
+  .pr-badge {
+    background: #1f6feb33;
+    color: var(--accent);
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .updated { margin-left: auto; white-space: nowrap; }
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+  }
+  .no-results {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 3rem;
+    font-size: 1.1rem;
+  }
+  @media (max-width: 600px) {
+    .header { padding: 1rem; }
+    .header h1 { font-size: 1.2rem; }
+    .container { padding: 1rem; }
+    .repo-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>
+      <svg width="28" height="28" viewBox="0 0 16 16" fill="var(--text)"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <a href="https://github.com/hendr15k" target="_blank">hendr15k</a> / repos
+    </h1>
+    <div class="stats" id="stats"></div>
+  </div>
+  <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2.5a5.487 5.487 0 00-4.131 1.869l1.204 1.204A.25.25 0 014.896 6H1.25A.25.25 0 011 5.75V2.104a.25.25 0 01.427-.177l1.38 1.38A7.002 7.002 0 0114.95 7.16a.75.75 0 11-1.49.178A5.5 5.5 0 008 2.5zM1.705 8.005a.75.75 0 01.834.656 5.5 5.5 0 009.592 2.97l-1.204-1.204a.25.25 0 01.177-.427h3.646a.25.25 0 01.25.25v3.646a.25.25 0 01-.427.177l-1.38-1.38A7.002 7.002 0 011.051 8.84a.75.75 0 01.654-.834z"/></svg>
+    Refresh
+  </button>
+</div>
+
+<div class="container">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search repos…" oninput="render()">
+    <div class="filter-chips" id="langChips"></div>
+  </div>
+  <div class="repo-grid" id="repoGrid"></div>
+</div>
+
+<div class="footer">
+  Last updated: <span id="lastUpdated"></span>
+</div>
+
+<script>
+const EMBEDDED_DATA = [
+  {"name":"Browserbetriebssystem","description":"Web-basiertes Desktop-Betriebssystem im Browser — Fenstermanager, Apps, Spiele, Videoplayer","updatedAt":"2026-04-22T15:53:00Z","isPrivate":false,"language":"JavaScript","ciStatus":"failure","openPRs":1,"prTitle":"PR #85: [ImgBot] Optimize images"},
+  {"name":"spritpreise","description":"Live Spritpreise Deutschland - GitHub Pages","updatedAt":"2026-04-21T22:55:14Z","isPrivate":false,"language":"HTML","ciStatus":"success","openPRs":0},
+  {"name":"Syncer","description":"Browser-basierter AI-Vorleser für Dokumente, mit TTS und Offline-Speicherung","updatedAt":"2026-04-21T22:36:58Z","isPrivate":false,"language":"TypeScript","ciStatus":"success","openPRs":0},
+  {"name":"Lernzeit-Tracker","description":"PWA Lernzeit-Tracker mit Dashboard, Timer und Streak-Visualisierung","updatedAt":"2026-04-21T22:36:58Z","isPrivate":false,"language":"JavaScript","ciStatus":"success","openPRs":0},
+  {"name":"bookish-waffle","description":"Browser-based Computer Algebra System — 15 math domains, 40 tests, zero dependencies","updatedAt":"2026-04-21T22:35:39Z","isPrivate":false,"language":"JavaScript","ciStatus":"success","openPRs":0},
+  {"name":"open-reader","description":"AI-powered article reader app with TTS and AI summarization","updatedAt":"2026-04-21T22:19:14Z","isPrivate":false,"language":"TypeScript","ciStatus":"success","openPRs":0},
+  {"name":"sci-fi-reading-plans","description":"","updatedAt":"2026-04-21T11:08:28Z","isPrivate":false,"language":"HTML","ciStatus":"success","openPRs":0},
+  {"name":"openclaw-appstore","description":"","updatedAt":"2026-04-21T10:26:35Z","isPrivate":false,"language":"HTML","ciStatus":"failure","openPRs":0},
+  {"name":"happyblue-elm327","description":"ELM327 integration for HappyBlue","updatedAt":"2026-04-21T10:18:02Z","isPrivate":true,"language":"Java","ciStatus":"n/a","openPRs":0},
+  {"name":"sci-fi-app","description":"","updatedAt":"2026-04-21T10:11:06Z","isPrivate":false,"language":null,"ciStatus":"success","openPRs":0},
+  {"name":"Synchronsprecher","description":"Browser-basierter Vorleser — verschiedene Stimmen","updatedAt":"2026-04-21T10:08:42Z","isPrivate":false,"language":"TypeScript","ciStatus":"n/a","openPRs":0},
+  {"name":"open-reader-v3","description":"PDF/TXT zu TTS mit Kapitel-Navigation","updatedAt":"2026-04-21T10:07:12Z","isPrivate":false,"language":"TypeScript","ciStatus":"n/a","openPRs":0},
+  {"name":"Einkaufsliste","description":"Ewige-Einkaufsliste für mehr Personen","updatedAt":"2026-04-21T10:01:22Z","isPrivate":false,"language":"PHP","ciStatus":"n/a","openPRs":0},
+  {"name":"rd6006","description":"RD6006 Python module","updatedAt":"2026-04-21T10:01:05Z","isPrivate":true,"language":"Python","ciStatus":"n/a","openPRs":0},
+  {"name":"sci-fi-empfehlungen","description":"Kuratierte Sci-Fi Buchempfehlungen","updatedAt":"2026-04-21T09:58:02Z","isPrivate":false,"language":"HTML","ciStatus":"n/a","openPRs":0},
+  {"name":"hendrik-sci-fi-recommendations","description":"Sci-Fi Buchempfehlungen mit Leseplan","updatedAt":"2026-04-21T09:57:35Z","isPrivate":false,"language":"HTML","ciStatus":"n/a","openPRs":0},
+  {"name":"hendr15k.github.io","description":"","updatedAt":"2026-04-21T09:57:20Z","isPrivate":true,"language":"Less","ciStatus":"n/a","openPRs":0},
+  {"name":"openclaw","description":"Personal AI assistant 🦞","updatedAt":"2026-04-21T09:57:21Z","isPrivate":false,"language":"Python","ciStatus":"n/a","openPRs":0},
+  {"name":"GPIOnext","description":"Create virtual gamepads with GPIO pins","updatedAt":"2026-04-20T22:50:13Z","isPrivate":false,"language":"Python","ciStatus":"n/a","openPRs":0},
+  {"name":"deploy-status","description":"Deploy status dashboard","updatedAt":"2026-04-20T22:38:32Z","isPrivate":false,"language":"HTML","ciStatus":"n/a","openPRs":0},
+  {"name":"Bluetooth-LE-Spam","description":"Bluetooth LE Spam App - forked","updatedAt":"2026-04-20T23:44:28Z","isPrivate":false,"language":"Kotlin","ciStatus":"n/a","openPRs":0},
+  {"name":"android-video-downloader","description":"Android app for downloading videos","updatedAt":"2026-04-20T23:44:16Z","isPrivate":false,"language":"Kotlin","ciStatus":"n/a","openPRs":0},
+  {"name":"Bibliothek","description":"Sci-Fi Bibliothek mit Leseplan","updatedAt":"2026-04-20T23:46:31Z","isPrivate":false,"language":"HTML","ciStatus":"n/a","openPRs":0},
+  {"name":"canop-obd","description":"Clean OBD-II Android app with ELM327, Jetpack Compose","updatedAt":"2026-04-20T19:44:33Z","isPrivate":false,"language":"Kotlin","ciStatus":"n/a","openPRs":0},
+  {"name":"jules-reader","description":"Redirect to open-reader","updatedAt":"2026-04-19T09:23:34Z","isPrivate":false,"language":"HTML","ciStatus":"n/a","openPRs":0}
+];
+
+let repos = EMBEDDED_DATA;
+let activeLang = null;
+
+const LANG_COLORS = {
+  'JavaScript': '#f1e05a',
+  'TypeScript': '#3178c6',
+  'Python': '#3572A5',
+  'HTML': '#e34c26',
+  'Kotlin': '#A97BFF',
+  'Java': '#b07219',
+  'PHP': '#4F5D95',
+  'Less': '#1e3650'
+};
+
+function timeAgo(dateStr) {
+  const now = new Date();
+  const d = new Date(dateStr);
+  const diff = Math.floor((now - d) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  if (diff < 2592000) return Math.floor(diff/86400) + 'd ago';
+  if (diff < 31536000) return Math.floor(diff/2592000) + 'mo ago';
+  return Math.floor(diff/31536000) + 'y ago';
+}
+
+function ciClass(status) {
+  if (status === 'success') return 'ci-success';
+  if (status === 'failure') return 'ci-failure';
+  return 'ci-na';
+}
+
+function ciTitle(status) {
+  if (status === 'success') return 'CI: Passing';
+  if (status === 'failure') return 'CI: Failing';
+  return 'No CI';
+}
+
+function render() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = repos.filter(r => {
+    const matchQ = !q || r.name.toLowerCase().includes(q) || (r.description||'').toLowerCase().includes(q);
+    const matchLang = !activeLang || r.language === activeLang;
+    return matchQ && matchLang;
+  });
+
+  // Stats
+  const total = repos.length;
+  const priv = repos.filter(r => r.isPrivate).length;
+  const ciFailing = repos.filter(r => r.ciStatus === 'failure').length;
+  document.getElementById('stats').innerHTML =
+    `<span>📦 ${total} repos</span>
+     <span>🔒 ${priv} private</span>
+     <span>🔴 ${ciFailing} failing CI</span>`;
+
+  // Grid
+  const grid = document.getElementById('repoGrid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results">No repos match your filters.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(r => {
+    const langColor = LANG_COLORS[r.language] || '#8b949e';
+    const visIcon = r.isPrivate
+      ? '<span class="vis-icon" title="Private">🔒</span>'
+      : '<span class="vis-icon" title="Public">🌐</span>';
+    const prBadge = r.openPRs > 0
+      ? `<span class="pr-badge" title="${r.prTitle||''}">🔀 ${r.openPRs} PR</span>`
+      : '';
+    const langBadge = r.language
+      ? `<span class="lang-badge"><span class="lang-dot" style="background:${langColor}"></span>${r.language}</span>`
+      : '';
+
+    return `
+      <div class="repo-card">
+        <div class="repo-name">
+          ${visIcon}
+          <a href="https://github.com/hendr15k/${encodeURIComponent(r.name)}" target="_blank">${r.name}</a>
+        </div>
+        <div class="repo-desc">${r.description || '<em style="opacity:0.4">No description</em>'}</div>
+        <div class="repo-meta">
+          ${langBadge}
+          <span style="display:flex;align-items:center;gap:0.3rem" title="${ciTitle(r.ciStatus)}">
+            <span class="ci-dot ${ciClass(r.ciStatus)}"></span>
+            ${r.ciStatus === 'success' ? 'passing' : r.ciStatus === 'failure' ? 'failing' : ''}
+          </span>
+          ${prBadge}
+          <span class="updated" title="${new Date(r.updatedAt).toLocaleString()}">🕑 ${timeAgo(r.updatedAt)}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function buildLangChips() {
+  const langs = [...new Set(repos.map(r => r.language).filter(Boolean))].sort();
+  const container = document.getElementById('langChips');
+  let html = `<button class="chip ${!activeLang?'active':''}" onclick="setLang(null)">All</button>`;
+  langs.forEach(l => {
+    html += `<button class="chip ${activeLang===l?'active':''}" onclick="setLang('${l}')">${l}</button>`;
+  });
+  container.innerHTML = html;
+}
+
+function setLang(lang) {
+  activeLang = lang;
+  buildLangChips();
+  render();
+}
+
+async function refreshData() {
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled = true;
+  btn.classList.add('spinning');
+  try {
+    const resp = await fetch('https://api.github.com/users/hendr15k/repos?sort=updated&per_page=100&type=all', {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!resp.ok) throw new Error('API returned ' + resp.status);
+    const data = await resp.json();
+
+    // Merge with embedded CI/PR data for known repos
+    const ciMap = {};
+    EMBEDDED_DATA.forEach(r => { ciMap[r.name] = r; });
+
+    repos = data.map(r => {
+      const known = ciMap[r.name] || {};
+      return {
+        name: r.name,
+        description: r.description || '',
+        updatedAt: r.updated_at || r.pushed_at,
+        isPrivate: r.private,
+        language: r.language,
+        ciStatus: known.ciStatus || 'n/a',
+        openPRs: known.openPRs || 0,
+        prTitle: known.prTitle || ''
+      };
+    });
+
+    buildLangChips();
+    render();
+    document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+  } catch(e) {
+    alert('Refresh failed: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('spinning');
+  }
+}
+
+// Init
+buildLangChips();
+render();
+document.getElementById('lastUpdated').textContent = 'Embedded data — ' + new Date().toLocaleString();
+</script>
+</body>
+</html>
