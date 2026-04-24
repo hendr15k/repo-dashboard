@@ -1,0 +1,45 @@
+name: Update Dashboard
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Daily at 08:00 UTC (10:00 CEST)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install GitHub CLI
+        run: |
+          (type -p wget >/dev/null || (apt update && apt-get install wget -y))
+          mkdir -p /etc/apt/keyrings
+          out=$(mktemp); wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg
+          cat $out | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
+          chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          apt update && apt install gh -y
+
+      - name: Authenticate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh auth status
+
+      - name: Update dashboard data
+        run: python3 scripts/update-dashboard.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: auto-update CI statuses [skip ci]"
+          git push
