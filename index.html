@@ -241,31 +241,256 @@
 
 <script>
 const EMBEDDED_DATA = [
-  {"name":"happyblue-elm327","description":"ELM327 integration for HappyBlue (Opel/GM diagnostic app)","updatedAt":"2026-04-23T23:43:45Z","isPrivate":true,"language":"Java","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"scifi-covers","description":"","updatedAt":"2026-04-23T16:45:13Z","isPrivate":false,"language":"HTML","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"repo-dashboard","description":"GitHub Repo Dashboard for hendr15k","updatedAt":"2026-04-23T15:46:40Z","isPrivate":false,"language":"HTML","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"bookish-waffle","description":"Browser-based Computer Algebra System — 15 math domains, 40 tests, zero dependencies","updatedAt":"2026-04-23T13:50:21Z","isPrivate":false,"language":"JavaScript","ciStatus":"success","openPRs":0,"prTitle":""},
-  {"name":"Browserbetriebssystem","description":"Web-basiertes Desktop-Betriebssystem im Browser — Fenstermanager, Apps, Spiele, Videoplayer","updatedAt":"2026-04-22T23:02:31Z","isPrivate":false,"language":"JavaScript","ciStatus":"failure","openPRs":1,"prTitle":"PR #85: [ImgBot] Optimize images"},
-  {"name":"spritpreise","description":"Live Spritpreise Deutschland - GitHub Pages","updatedAt":"2026-04-21T22:55:10Z","isPrivate":false,"language":"HTML","ciStatus":"success","openPRs":0,"prTitle":""},
-  {"name":"Lernzeit-Tracker","description":"PWA Lernzeit-Tracker mit Dashboard, Timer und Streak-Visualisierung","updatedAt":"2026-04-21T22:36:54Z","isPrivate":false,"language":"JavaScript","ciStatus":"success","openPRs":0,"prTitle":""},
-  {"name":"Syncer","description":"Browser-basierter AI-Vorleser für Dokumente, mit TTS und Offline-Speicherung (ehemals Syncer-App)","updatedAt":"2026-04-21T22:36:54Z","isPrivate":false,"language":"TypeScript","ciStatus":"success","openPRs":0,"prTitle":""},
-  {"name":"open-reader","description":"AI-powered article reader app with TTS and AI summarization","updatedAt":"2026-04-21T22:21:59Z","isPrivate":false,"language":"TypeScript","ciStatus":"success","openPRs":0,"prTitle":""},
-  {"name":"sci-fi-reading-plans","description":"","updatedAt":"2026-04-21T11:08:25Z","isPrivate":false,"language":"HTML","ciStatus":"success","openPRs":0,"prTitle":""},
-  {"name":"openclaw-appstore","description":"","updatedAt":"2026-04-21T10:26:31Z","isPrivate":false,"language":"HTML","ciStatus":"failure","openPRs":0,"prTitle":""},
-  {"name":"GPIOnext","description":"The next evolution of GPioneer! Create virtual gamepads with your GPIO pins!","updatedAt":"2026-04-21T10:13:41Z","isPrivate":false,"language":"Python","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"sci-fi-app","description":"","updatedAt":"2026-04-21T10:13:38Z","isPrivate":false,"language":null,"ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"open-reader-v3","description":"Open Reader: PDF/TXT zu TTS mit Kapitel-Navigation","updatedAt":"2026-04-21T10:09:53Z","isPrivate":false,"language":"TypeScript","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"Synchronsprecher","description":"Browser-basierter Vorleser — lies Dokumente vor mit verschiedenen Stimmen, unterstützt PDF, ePub, TXT","updatedAt":"2026-04-21T10:08:39Z","isPrivate":false,"language":"TypeScript","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"Einkaufsliste","description":"Dieses kleine Tool löst das Ewige-Einkaufsliste-für-mehr-Personen-Problem.","updatedAt":"2026-04-21T10:01:18Z","isPrivate":false,"language":"PHP","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"rd6006","description":"RD6006 Python module","updatedAt":"2026-04-21T10:01:02Z","isPrivate":true,"language":"Python","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"sci-fi-empfehlungen","description":"Kuratierte Sci-Fi Buchempfehlungen für Hendrik — erweitert 03.04.2026","updatedAt":"2026-04-21T09:57:58Z","isPrivate":false,"language":"HTML","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"Ultimate-Linux-Mint-19-Cinnamon","description":"","updatedAt":"2026-04-21T09:57:40Z","isPrivate":false,"language":"Shell","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"Ultimate-Linux-Mint-18.1-Cinnamon","description":"Automatic installation of all necessary programs ","updatedAt":"2026-04-21T09:57:39Z","isPrivate":false,"language":"Shell","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"instabot-travis-ci","description":"Automate your Instabot with Travis-CI daily builds! For free","updatedAt":"2026-04-21T09:57:32Z","isPrivate":false,"language":"Python","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"hendrik-sci-fi-recommendations","description":"Sci-Fi Buchempfehlungen mit Leseplan, Filter und Export","updatedAt":"2026-04-21T09:57:31Z","isPrivate":false,"language":"HTML","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"hendr15k.github.io","description":"","updatedAt":"2026-04-21T09:57:17Z","isPrivate":true,"language":"Less","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"openclaw","description":"Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 ","updatedAt":"2026-04-21T09:57:10Z","isPrivate":false,"language":"Python","ciStatus":"n/a","openPRs":0,"prTitle":""},
-  {"name":"Linux-Ultimate","description":"Standard programs everyone needs automatic instalation.","updatedAt":"2026-04-21T09:57:08Z","isPrivate":true,"language":"Shell","ciStatus":"n/a","openPRs":0,"prTitle":""}
+  {
+    "name": "happyblue-elm327",
+    "description": "ELM327 integration for HappyBlue (Opel/GM diagnostic app)",
+    "updatedAt": "2026-04-23T23:43:45Z",
+    "isPrivate": true,
+    "language": "Java",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "scifi-covers",
+    "description": "",
+    "updatedAt": "2026-04-23T16:45:13Z",
+    "isPrivate": false,
+    "language": "HTML",
+    "ciStatus": "success",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "repo-dashboard",
+    "description": "GitHub Repo Dashboard for hendr15k",
+    "updatedAt": "2026-04-23T15:46:40Z",
+    "isPrivate": false,
+    "language": "HTML",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "bookish-waffle",
+    "description": "Browser-based Computer Algebra System — 15 math domains, 40 tests, zero dependencies",
+    "updatedAt": "2026-04-23T13:50:21Z",
+    "isPrivate": false,
+    "language": "JavaScript",
+    "ciStatus": "success",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "Browserbetriebssystem",
+    "description": "Web-basiertes Desktop-Betriebssystem im Browser — Fenstermanager, Apps, Spiele, Videoplayer",
+    "updatedAt": "2026-04-22T23:02:31Z",
+    "isPrivate": false,
+    "language": "JavaScript",
+    "ciStatus": "success",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "spritpreise",
+    "description": "Live Spritpreise Deutschland - GitHub Pages",
+    "updatedAt": "2026-04-21T22:55:10Z",
+    "isPrivate": false,
+    "language": "HTML",
+    "ciStatus": "success",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "Lernzeit-Tracker",
+    "description": "PWA Lernzeit-Tracker mit Dashboard, Timer und Streak-Visualisierung",
+    "updatedAt": "2026-04-21T22:36:54Z",
+    "isPrivate": false,
+    "language": "JavaScript",
+    "ciStatus": "success",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "Syncer",
+    "description": "Browser-basierter AI-Vorleser für Dokumente, mit TTS und Offline-Speicherung (ehemals Syncer-App)",
+    "updatedAt": "2026-04-21T22:36:54Z",
+    "isPrivate": false,
+    "language": "TypeScript",
+    "ciStatus": "success",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "open-reader",
+    "description": "AI-powered article reader app with TTS and AI summarization",
+    "updatedAt": "2026-04-21T22:21:59Z",
+    "isPrivate": false,
+    "language": "TypeScript",
+    "ciStatus": "success",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "sci-fi-reading-plans",
+    "description": "",
+    "updatedAt": "2026-04-21T11:08:25Z",
+    "isPrivate": false,
+    "language": "HTML",
+    "ciStatus": "success",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "openclaw-appstore",
+    "description": "",
+    "updatedAt": "2026-04-21T10:26:31Z",
+    "isPrivate": false,
+    "language": "HTML",
+    "ciStatus": "success",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "GPIOnext",
+    "description": "The next evolution of GPioneer! Create virtual gamepads with your GPIO pins!",
+    "updatedAt": "2026-04-21T10:13:41Z",
+    "isPrivate": false,
+    "language": "Python",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "sci-fi-app",
+    "description": "",
+    "updatedAt": "2026-04-21T10:13:38Z",
+    "isPrivate": false,
+    "language": null,
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "open-reader-v3",
+    "description": "Open Reader: PDF/TXT zu TTS mit Kapitel-Navigation",
+    "updatedAt": "2026-04-21T10:09:53Z",
+    "isPrivate": false,
+    "language": "TypeScript",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "Synchronsprecher",
+    "description": "Browser-basierter Vorleser — lies Dokumente vor mit verschiedenen Stimmen, unterstützt PDF, ePub, TXT",
+    "updatedAt": "2026-04-21T10:08:39Z",
+    "isPrivate": false,
+    "language": "TypeScript",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "Einkaufsliste",
+    "description": "Dieses kleine Tool löst das Ewige-Einkaufsliste-für-mehr-Personen-Problem.",
+    "updatedAt": "2026-04-21T10:01:18Z",
+    "isPrivate": false,
+    "language": "PHP",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "rd6006",
+    "description": "RD6006 Python module",
+    "updatedAt": "2026-04-21T10:01:02Z",
+    "isPrivate": true,
+    "language": "Python",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "sci-fi-empfehlungen",
+    "description": "Kuratierte Sci-Fi Buchempfehlungen für Hendrik — erweitert 03.04.2026",
+    "updatedAt": "2026-04-21T09:57:58Z",
+    "isPrivate": false,
+    "language": "HTML",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "Ultimate-Linux-Mint-19-Cinnamon",
+    "description": "",
+    "updatedAt": "2026-04-21T09:57:40Z",
+    "isPrivate": false,
+    "language": "Shell",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "Ultimate-Linux-Mint-18.1-Cinnamon",
+    "description": "Automatic installation of all necessary programs ",
+    "updatedAt": "2026-04-21T09:57:39Z",
+    "isPrivate": false,
+    "language": "Shell",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "instabot-travis-ci",
+    "description": "Automate your Instabot with Travis-CI daily builds! For free",
+    "updatedAt": "2026-04-21T09:57:32Z",
+    "isPrivate": false,
+    "language": "Python",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "hendrik-sci-fi-recommendations",
+    "description": "Sci-Fi Buchempfehlungen mit Leseplan, Filter und Export",
+    "updatedAt": "2026-04-21T09:57:31Z",
+    "isPrivate": false,
+    "language": "HTML",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "hendr15k.github.io",
+    "description": "",
+    "updatedAt": "2026-04-21T09:57:17Z",
+    "isPrivate": true,
+    "language": "Less",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "openclaw",
+    "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞 ",
+    "updatedAt": "2026-04-21T09:57:10Z",
+    "isPrivate": false,
+    "language": "Python",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  },
+  {
+    "name": "Linux-Ultimate",
+    "description": "Standard programs everyone needs automatic instalation.",
+    "updatedAt": "2026-04-21T09:57:08Z",
+    "isPrivate": true,
+    "language": "Shell",
+    "ciStatus": "n/a",
+    "openPRs": 0,
+    "prTitle": ""
+  }
 ];
 
 let repos = EMBEDDED_DATA;
